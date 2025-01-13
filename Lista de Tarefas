@@ -1,0 +1,116 @@
+#include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
+
+#define MAX_TAREFAS 100
+#define MAX_DESCRICAO 100
+
+typedef struct {
+    char descricao[MAX_DESCRICAO];
+    int prioridade; 
+} Tarefa;
+
+Tarefa listaDeTarefas[MAX_TAREFAS];
+int totalTarefas = 0;
+
+void adicionarTarefa() {
+    if (totalTarefas >= MAX_TAREFAS) {
+        printf("Lista de tarefas cheia!\n");
+        return;
+    }
+
+    char descricao[MAX_DESCRICAO];
+    int prioridade;
+
+    printf("Digite a descrição da tarefa: ");
+    getchar(); 
+    fgets(descricao, MAX_DESCRICAO, stdin);
+    descricao[strcspn(descricao, "\n")] = 0; 
+
+    printf("Digite a prioridade (1 - Alta, 2 - Média, 3 - Baixa): ");
+    scanf("%d", &prioridade);
+
+    if (prioridade < 1 || prioridade > 3) {
+        printf("Prioridade inválida! Escolha entre 1 (Alta), 2 (Média) ou 3 (Baixa).\n");
+        return;
+    }
+
+    strcpy(listaDeTarefas[totalTarefas].descricao, descricao);
+    listaDeTarefas[totalTarefas].prioridade = prioridade;
+    totalTarefas++;
+
+    printf("Tarefa '%s' adicionada com sucesso!\n", descricao);
+}
+
+void removerTarefa() {
+    char descricao[MAX_DESCRICAO];
+
+    printf("Digite a descrição da tarefa a ser removida: ");
+    getchar(); 
+    fgets(descricao, MAX_DESCRICAO, stdin);
+    descricao[strcspn(descricao, "\n")] = 0; 
+
+    for (int i = 0; i < totalTarefas; i++) {
+	int j;
+        if (strcmp(listaDeTarefas[i].descricao, descricao) == 0) {
+            for ( j = i; j < totalTarefas - 1; j++) {
+                listaDeTarefas[j] = listaDeTarefas[j + 1];
+            }
+            totalTarefas--;
+            printf("Tarefa '%s' removida com sucesso!\n", descricao);
+            return;
+        }
+    }
+    printf("Tarefa '%s' não encontrada.\n", descricao);
+}
+
+void listarTarefas() {
+    if (totalTarefas == 0) {
+        printf("Nenhuma tarefa na lista.\n");
+        return;
+    }
+
+    printf("\nTarefas:\n");
+    const char *prioridades[] = {"", "Alta", "Média", "Baixa"};
+    int i;
+    for ( i = 0; i < totalTarefas; i++) {
+        printf("- %s (Prioridade: %s)\n", listaDeTarefas[i].descricao, prioridades[listaDeTarefas[i].prioridade]);
+    }
+}
+
+void menu() {
+    int escolha;
+
+    do {
+        printf("\nMenu de Opções:\n");
+        printf("1. Adicionar tarefa\n");
+        printf("2. Remover tarefa\n");
+        printf("3. Listar tarefas\n");
+        printf("4. Sair\n");
+
+        printf("Escolha uma opção: ");
+        scanf("%d", &escolha);
+
+        switch (escolha) {
+            case 1:
+                adicionarTarefa();
+                break;
+            case 2:
+                removerTarefa();
+                break;
+            case 3:
+                listarTarefas();
+                break;
+            case 4:
+                printf("Saindo... Até logo!\n");
+                break;
+            default:
+                printf("Opção inválida. Tente novamente.\n");
+        }
+    } while (escolha != 4);
+}
+
+int main() {
+    menu();
+    return 0;
+}
