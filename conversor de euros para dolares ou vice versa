@@ -1,0 +1,37 @@
+#include <stdio.h>
+
+#define TAXA_EURO_DOLAR 1.10  // Exemplo de taxa: 1 Euro = 1.10 Dólares
+#define TAXA_DOLAR_EURO 0.91  // Exemplo de taxa: 1 Dólar = 0.91 Euros
+
+void converterMoeda();
+
+int main() {
+    printf("=== Conversor de Moeda: Euro <-> Dólar ===\n");
+    converterMoeda();
+    return 0;
+}
+
+void converterMoeda() {
+    int opcao;
+    double valor, resultado;
+
+    printf("Escolha uma opção:\n");
+    printf("1. Converter Euro para Dólar\n");
+    printf("2. Converter Dólar para Euro\n");
+    printf("Opção: ");
+    scanf("%d", &opcao);
+
+    if (opcao == 1) {
+        printf("Digite o valor em Euros: ");
+        scanf("%lf", &valor);
+        resultado = valor * TAXA_EURO_DOLAR;
+        printf("%.2lf Euros equivalem a %.2lf Dólares\n", valor, resultado);
+    } else if (opcao == 2) {
+        printf("Digite o valor em Dólares: ");
+        scanf("%lf", &valor);
+        resultado = valor * TAXA_DOLAR_EURO;
+        printf("%.2lf Dólares equivalem a %.2lf Euros\n", valor, resultado);
+    } else {
+        printf("Opção inválida. Tente novamente.\n");
+    }
+}
